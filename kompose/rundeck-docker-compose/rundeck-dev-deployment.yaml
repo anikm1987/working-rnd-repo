@@ -1,0 +1,73 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rundeck-dev
+  name: rundeck-dev
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: rundeck-dev
+    spec:
+      containers:
+      - env:
+        - name: RUNDECK_API_TOKENS_DURATION_MAX
+          value: "0"
+        - name: RUNDECK_DATABASE_DRIVER
+          value: com.mysql.jdbc.Driver
+        - name: RUNDECK_DATABASE_PASSWORD
+          value: rundeck
+        - name: RUNDECK_DATABASE_URL
+          value: jdbc:mysql://mysql/rundeck?autoReconnect=true&useSSL=false
+        - name: RUNDECK_DATABASE_USERNAME
+          value: rundeck
+        - name: RUNDECK_GRAILS_URL
+          value: http://localhost:4440
+        - name: RUNDECK_JAAS_FILE_FLAG
+          value: sufficient
+        - name: RUNDECK_JAAS_LDAP_BINDDN
+          value: oax82778@sservice.test.com
+        - name: RUNDECK_JAAS_LDAP_BINDPASSWORD
+          value: Rundeck
+        - name: RUNDECK_JAAS_LDAP_FLAG
+          value: sufficient
+        - name: RUNDECK_JAAS_LDAP_FORCEBINDINGLOGIN
+          value: "true"
+        - name: RUNDECK_JAAS_LDAP_PROVIDERURL
+          value: ldap://sservice.test.com:389
+        - name: RUNDECK_JAAS_LDAP_ROLEBASEDN
+          value: DC=sservice,DC=test,DC=com
+        - name: RUNDECK_JAAS_LDAP_ROLEMEMBERATTRIBUTE
+          value: member
+        - name: RUNDECK_JAAS_LDAP_ROLENAMEATTRIBUTE
+          value: cn
+        - name: RUNDECK_JAAS_LDAP_ROLEOBJECTCLASS
+          value: group
+        - name: RUNDECK_JAAS_LDAP_USERBASEDN
+          value: DC=sservice,DC=test,DC=com
+        - name: RUNDECK_JAAS_MODULES_0
+          value: JettyCombinedLdapLoginModule
+        - name: RUNDECK_JAAS_MODULES_1
+          value: PropertyFileLoginModule
+        - name: RUNDECK_SECURITY_HTTPHEADERS_PROVIDER_CSP_ENABLED
+          value: "false"
+        - name: RUNDECK_TOKENS_FILE
+          value: /home/rundeck/etc/tokens.properties
+        image: rundeck-dev
+        name: rundeck-dev
+        ports:
+        - containerPort: 4440
+        resources: {}
+      restartPolicy: Always
+status: {}
